@@ -4,28 +4,29 @@ import Card from "./Card";
 function Cards({ setRunning }) {
   const [items, setItems] = useState(
     [
-      { id: "p", img: "/images/pumpkin.png", stat: "" },
-      { id: "p", img: "/images/pumpkin.png", stat: "" },
-      { id: "g", img: "/images/ghost.png", stat: "" },
-      { id: "g", img: "/images/ghost.png", stat: "" },
-      { id: "b", img: "/images/black-cat.png", stat: "" },
-      { id: "b", img: "/images/black-cat.png", stat: "" },
-      { id: "c", img: "/images/candy.png", stat: "" },
-      { id: "c", img: "/images/candy.png", stat: "" },
-      { id: "p", img: "/images/poison.png", stat: "" },
-      { id: "p", img: "/images/poison.png", stat: "" },
-      { id: "s", img: "/images/spider.png", stat: "" },
-      { id: "s", img: "/images/spider.png", stat: "" },
-      { id: "z", img: "/images/zombie.png", stat: "" },
-      { id: "z", img: "/images/zombie.png", stat: "" },
-      { id: "w", img: "/images/witch.png", stat: "" },
-      { id: "w", img: "/images/witch.png", stat: "" },
+      { id: 1, img: "/images/pumpkin.png", stat: "" },
+      { id: 1, img: "/images/pumpkin.png", stat: "" },
+      { id: 2, img: "/images/ghost.png", stat: "" },
+      { id: 2, img: "/images/ghost.png", stat: "" },
+      { id: 3, img: "/images/black-cat.png", stat: "" },
+      { id: 3, img: "/images/black-cat.png", stat: "" },
+      { id: 4, img: "/images/candy.png", stat: "" },
+      { id: 4, img: "/images/candy.png", stat: "" },
+      { id: 5, img: "/images/poison.png", stat: "" },
+      { id: 5, img: "/images/poison.png", stat: "" },
+      { id: 6, img: "/images/spider.png", stat: "" },
+      { id: 6, img: "/images/spider.png", stat: "" },
+      { id: 7, img: "/images/zombie.png", stat: "" },
+      { id: 7, img: "/images/zombie.png", stat: "" },
+      { id: 8, img: "/images/witch.png", stat: "" },
+      { id: 8, img: "/images/witch.png", stat: "" },
     ].sort(() => Math.random() - 0.5)
   );
 
   const [stats, setStats] = useState(0);
   const [prevIndex, setPrevIndex] = useState(-1);
   const [endGame, setEndsGame] = useState(false);
+  const [click, setClick] = useState(true);
 
   useEffect(() => {
     if (stats.length === 16) {
@@ -50,17 +51,19 @@ function Cards({ setRunning }) {
       items[currentIndex].stat = "wrong";
       items[prevIndex].stat = "wrong";
       setItems([...items]);
+      setClick(false);
       setTimeout(() => {
         items[currentIndex].stat = "";
         items[prevIndex].stat = "";
         setItems([...items]);
         setPrevIndex(-1);
+        setClick(true);
       }, 1000);
     }
   }
 
   function handleClick(index) {
-    if (!endGame) {
+    if (!endGame && click) {
       if (prevIndex === -1 && items[index].stat !== "correct") {
         console.log("first item");
         items[index].stat = "active";
@@ -77,7 +80,13 @@ function Cards({ setRunning }) {
   return (
     <div className="container">
       {items.map((item, index) => (
-        <Card item={item} key={index} index={index} handleClick={handleClick} />
+        <Card
+          item={item}
+          key={index}
+          index={index}
+          handleClick={handleClick}
+          click={click}
+        />
       ))}
     </div>
   );
